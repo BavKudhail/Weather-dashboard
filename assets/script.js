@@ -12,6 +12,7 @@ var futureForecastEl = document.querySelector("#futureForecast");
 // api
 var apiKey = "a1ca8cc36acc9cdf8bcd7b5e5a399d08";
 
+// when a user inputs a city value then...
 var formSubmitHandler = function (event) {
   event.preventDefault();
   resetDisplay();
@@ -26,6 +27,7 @@ var formSubmitHandler = function (event) {
   }
 };
 
+// remove previous data from display
 function resetDisplay() {
   futureForecastEl.innerHTML = " ";
   $("#futureForecastHeading").text(" ");
@@ -33,29 +35,37 @@ function resetDisplay() {
   weatherDataList.innerHTML = " ";
 }
 
+// if user clicks a button from previous searches...
 var buttonClickHandler = function (event) {
   resetDisplay();
   var cityButton = event.target.getAttribute("data-city");
 
   if (cityButton) {
-    console.log("clicked city button");
     getCurrentWeather(cityButton);
     getFutureWeather(cityButton);
   }
 };
-
+// previous search button event listener
 $(document).on("click", ".list-city-item", buttonClickHandler);
 
+// clear local storage button
+$("#deleteBtn").on("click", function () {
+  localStorage.clear();
+  resetDisplay();
+});
+
+// save searches to local storage
 function savePreviousSearches(cityName) {
   if (!previousSearches.includes(cityName)) {
     previousSearches.push(cityName);
     var cityInput = $(`
     <button data-city="${cityName}" class="btn rounded-pill btn-outline-primary w-100 my-2 list-city-item">${cityName}</button>`);
     $("#previousSearches").append(cityInput);
+    localStorage.setItem("city", JSON.stringify(previousSearches));
   }
-  localStorage.setItem("city", JSON.stringify(previousSearches));
 }
 
+// get current weather data
 var getCurrentWeather = function (cityName) {
   // api link
   var apiUrl =
@@ -80,6 +90,7 @@ var getCurrentWeather = function (cityName) {
     });
 };
 
+// display current weather data
 var displayCurrentWeather = function (weatherData, searchTerm) {
   var currentDate = moment().format(" (M/D/YYYY)");
   searchTermEl.textContent = searchTerm + currentDate;
@@ -112,6 +123,7 @@ var displayCurrentWeather = function (weatherData, searchTerm) {
   currentUVIndex(weatherData.coord);
 };
 
+// get current UV index
 function currentUVIndex(coord) {
   var apiUrl2 =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -128,6 +140,7 @@ function currentUVIndex(coord) {
   });
 }
 
+// display current UV index
 function displayUVIndex(weatherData) {
   var uv = weatherData.current.uvi;
 
@@ -155,8 +168,7 @@ function displayUVIndex(weatherData) {
   uvIndexEl.appendChild(uvIndexBtn);
 }
 
-// 5 day weather fore-cast
-
+// get 5-day future forecast
 function getFutureWeather(cityName) {
   var apiUrl3 =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -172,6 +184,7 @@ function getFutureWeather(cityName) {
   });
 }
 
+// display 5-day future forecast
 function displayFutureWeather(futureWeatherData) {
   var forecastHeading = $(
     `<h3 class="text-primary text-uppercase" >5-Day Forecast<h3/>`
@@ -208,4 +221,24 @@ function displayFutureWeather(futureWeatherData) {
   }
 }
 
+// 'search city' button event listener
 cityFormEl.addEventListener("submit", formSubmitHandler);
+
+// get data from local storage
+getLocalStorage();
+
+function getLocalStorage() {
+  if (localStorage.getItem("city")) {
+    previousSearches = JSON.parse(localStorage.getItem("city"));
+
+    for (var i = 0; i < previousSearches.length; i++) {
+      var cityName = previousSearches[i];
+      var cityInput = $(`
+    <button data-city="${cityName}" class="btn rounded-pill btn-outline-primary w-100 my-2 list-city-item">${cityName}</button>`);
+      $("#previousSearches").append(cityInput);
+    }
+    // display the last searched city on screen
+    getCurrentWeather(previousSearches[previousSearches.length - 1]);
+    getFutureWeather(previousSearches[previousSearches.length - 1]);
+  }
+}
