@@ -4,11 +4,13 @@ var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city-input");
 var submitBtnEl = document.querySelector("#submitBtn");
 var previousSearches = [];
+
 // weather data elements
 var currentWeatherEl = document.querySelector("#current-weather");
 var searchTermEl = document.querySelector("#search-term");
 var weatherDataList = document.querySelector("#weather-data-list");
 var futureForecastEl = document.querySelector("#futureForecast");
+
 // api
 var apiKey = "a1ca8cc36acc9cdf8bcd7b5e5a399d08";
 
@@ -92,7 +94,7 @@ var getCurrentWeather = function (cityName) {
 
 // display current weather data
 var displayCurrentWeather = function (weatherData, searchTerm) {
-  var currentDate = moment().format(" (M/D/YYYY)");
+  var currentDate = moment().format(", MMMM Do YYYY");
   searchTermEl.textContent = searchTerm + currentDate;
 
   // mapping weather variable to object properties
@@ -142,14 +144,14 @@ function currentUVIndex(coord) {
 
 // display current UV index
 function displayUVIndex(weatherData) {
-  var uv = weatherData.current.uvi;
+  var uv = weatherData.daily[0].uvi;
 
   // create
   var uvIndexEl = document.createElement("li");
   var uvIndexBtn = document.createElement("button");
   // ammend
   uvIndexEl.textContent = "UV Index: ";
-  uvIndexBtn.textContent = weatherData.current.uvi + " %";
+  uvIndexBtn.textContent = uv + " %";
 
   // changing background color
   if (uv >= 11) {
@@ -192,8 +194,9 @@ function displayFutureWeather(futureWeatherData) {
   $("#futureForecastHeading").append(forecastHeading);
 
   for (let i = 0; i < futureWeatherData.length; i += 8) {
+    var unixFormat = moment.unix(futureWeatherData[i].dt).format("MMM Do YYYY");
     var futureCityData = {
-      date: futureWeatherData[i].dt_txt,
+      date: unixFormat,
       icon: futureWeatherData[i].weather[0].icon,
       maxTemp: futureWeatherData[i].main.temp_max,
       minTemp: futureWeatherData[i].main.temp_min,
@@ -227,6 +230,7 @@ cityFormEl.addEventListener("submit", formSubmitHandler);
 // get data from local storage
 getLocalStorage();
 
+// create button elements from local storage data
 function getLocalStorage() {
   if (localStorage.getItem("city")) {
     previousSearches = JSON.parse(localStorage.getItem("city"));
