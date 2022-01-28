@@ -13,28 +13,86 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    />
     <title>Weather-Dashboard</title>
   </head>
   <body>
-    <!-- navbar -->
-    <nav
-      class="navbar navbar-light bg-light mb-1 d-flex justify-content-center"
-    >
-      <a class="navbar-brand" href="#">Weather Dashboard</a>
+
+    <!-- Container -->
+    <div class="container-fluid">
+      <!-- header -->
+    <nav class="navbar justify-content-center mb-3">
+      <span class="navbar-brand mb-0 h1 text-center text-uppercase text-primary"
+        >Weather Dashboard <i class="fas fa-cloud-sun"></i
+      ></span>
     </nav>
-    <!-- form -->
-    <form id="city-form">
-      <div>
-        <label class="form-label">Search for a city</label>
-        <input
-          id="city-input"
-          name="city"
-          type="text"
-          class="form-input"
-          placeholder="Birmingham"
-        />
+      <!-- Search for your city -->
+      <div class="row">
+        <div class="col-3 d-flex flex-column">
+          <div class="current-weather-card my-4">
+            <h3 class="card-header text-center">Search a City <i class="fas fa-search-location text-primary"></i></h3>
+            <form id="city-form" class="card-body">
+              <div class="d-flex justify-content-between flex-column">
+                <label class="form-label text-primary text-center">City Name: </label>
+              <input
+                id="city-input"
+                name="city"
+                type="text"
+                class="form-input border-primary rounded-pill p-1"
+                placeholder="Birmingham"
+              />
+              </div>
+              
+              <button type="submit" class="btn rounded-pill btn-outline-primary w-100 my-2">
+                Search City
+              </button>
+            </form>
+          </div>
+          <!-- Previous Searches -->
+          <div class="current-weather-card">
+            <h3 class="card-header text-center">Previous Searches:</h3>
+            <div id="previousSearches" class="card-body">
+            </div>
+          </div>
+        </div>
+        <!-- Current forecast -->
+        <div class="col-9">
+          <!-- Current forecast row -->
+          <div class="row">
+            <div class="current-weather-card my-4 p-4">
+                <div id="current-weather" class="text-white" >
+                <h2><span id="search-term"></span></h2>
+                <div id="icon"><img id="wicon" src="" alt="" /></div>
+                <ul id="weather-data-list"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- future 5 day forecast row-->
+          <div class="row">
+            <div class="col-12">
+                <div id="futureForecastHeading"></div>
+                <div id="futureForecast" class="d-flex"></div>
+            </div>
+          </div>
       </div>
-      <button id="" type="submit" class="btn btn-primary">Search</button>
-    </form>
+    </div>
+    <!-- j-query link -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- moment link -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </body>
 </html>
