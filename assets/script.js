@@ -195,7 +195,7 @@ function getFutureWeather(cityName) {
 // Display 5-day future forecast
 function displayFutureWeather(futureWeatherData) {
   var forecastHeading = $(
-    `<h3 class="text-primary text-uppercase" >5-Day Forecast<h3/>`
+    `<h3 class="text-primary text-uppercase text-center mb-4" >5-Day Forecast<h3/>`
   );
   $("#futureForecastHeading").append(forecastHeading);
 
