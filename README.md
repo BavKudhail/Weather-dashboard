@@ -35,6 +35,7 @@ THEN I am again presented with current and future conditions for that city
 ## Application Screenshot
 
 ![application-screenshot-1](https://raw.githubusercontent.com/BavKudhail/weather-dashboard/main/assets/images/screenshot.JPG)
+![application-screenshot-2](https://raw.githubusercontent.com/BavKudhail/weather-dashboard/main/assets/images/screenshot-2.JPG)
 
 ## The Learning Loop
 
