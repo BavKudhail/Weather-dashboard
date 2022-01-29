@@ -1,20 +1,17 @@
-// ❌✔️
-// search city elements
+// DOM variables
 var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city-input");
 var submitBtnEl = document.querySelector("#submitBtn");
 var previousSearches = [];
-
-// weather data elements
 var currentWeatherEl = document.querySelector("#current-weather");
 var searchTermEl = document.querySelector("#search-term");
 var weatherDataList = document.querySelector("#weather-data-list");
 var futureForecastEl = document.querySelector("#futureForecast");
 
-// api
+// Api Key
 var apiKey = "a1ca8cc36acc9cdf8bcd7b5e5a399d08";
 
-// when a user inputs a city value then...
+// When a user inputs a city value...
 var formSubmitHandler = function (event) {
   event.preventDefault();
   resetDisplay();
@@ -29,15 +26,16 @@ var formSubmitHandler = function (event) {
   }
 };
 
-// remove previous data from display
+// Remove previous data from display
 function resetDisplay() {
   futureForecastEl.innerHTML = " ";
   $("#futureForecastHeading").text(" ");
   searchTermEl.textContent = " ";
   weatherDataList.innerHTML = " ";
+  document.getElementById("wicon").setAttribute("src", "");
 }
 
-// if user clicks a button from previous searches...
+// If a user clicks a previous searches button...
 var buttonClickHandler = function (event) {
   resetDisplay();
   var cityButton = event.target.getAttribute("data-city");
@@ -47,16 +45,24 @@ var buttonClickHandler = function (event) {
     getFutureWeather(cityButton);
   }
 };
-// previous search button event listener
+
+// Previous searches button event listener
 $(document).on("click", ".list-city-item", buttonClickHandler);
 
-// clear local storage button
+// Delete history button event listener
 $("#deleteBtn").on("click", function () {
   localStorage.clear();
+  removePreviousSearches();
   resetDisplay();
+  location.reload();
 });
 
-// save searches to local storage
+// Function to remove previous searches
+function removePreviousSearches() {
+  $(".list-city-item").remove();
+}
+
+// Save searches to local storage
 function savePreviousSearches(cityName) {
   if (!previousSearches.includes(cityName)) {
     previousSearches.push(cityName);
@@ -67,7 +73,7 @@ function savePreviousSearches(cityName) {
   }
 }
 
-// get current weather data
+// Get current weather data
 var getCurrentWeather = function (cityName) {
   // api link
   var apiUrl =
@@ -84,15 +90,15 @@ var getCurrentWeather = function (cityName) {
           displayCurrentWeather(data, cityName);
         });
       } else {
-        alert("Error: Else information");
+        alert("Error: Please enter a valid city");
       }
     })
     .catch(function (error) {
-      alert("Error: Catch information");
+      alert("Error: ");
     });
 };
 
-// display current weather data
+// Display current weather data
 var displayCurrentWeather = function (weatherData, searchTerm) {
   var currentDate = moment().format(", MMMM Do YYYY");
   searchTermEl.textContent = searchTerm + currentDate;
@@ -125,7 +131,7 @@ var displayCurrentWeather = function (weatherData, searchTerm) {
   currentUVIndex(weatherData.coord);
 };
 
-// get current UV index
+// Get current UV index
 function currentUVIndex(coord) {
   var apiUrl2 =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -142,7 +148,7 @@ function currentUVIndex(coord) {
   });
 }
 
-// display current UV index
+// Display current UV index
 function displayUVIndex(weatherData) {
   var uv = weatherData.daily[0].uvi;
 
@@ -170,7 +176,7 @@ function displayUVIndex(weatherData) {
   uvIndexEl.appendChild(uvIndexBtn);
 }
 
-// get 5-day future forecast
+// Get 5-day future forecast
 function getFutureWeather(cityName) {
   var apiUrl3 =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -186,7 +192,7 @@ function getFutureWeather(cityName) {
   });
 }
 
-// display 5-day future forecast
+// Display 5-day future forecast
 function displayFutureWeather(futureWeatherData) {
   var forecastHeading = $(
     `<h3 class="text-primary text-uppercase" >5-Day Forecast<h3/>`
@@ -210,7 +216,7 @@ function displayFutureWeather(futureWeatherData) {
     // create / ammend
 
     var futureCard = $(`
-      <div class="future-card-item">
+      <div class="col-12 col-sm-12 col-lg-2 col-md-2 future-card-item">
         <h5>${futureCityData.date}</h5>
         <div id="icon"><img id="wicon" src="${iconUrl}" alt="" /></div>
         <p>Max Temp:  ${futureCityData.maxTemp}  °C</p>
@@ -224,13 +230,13 @@ function displayFutureWeather(futureWeatherData) {
   }
 }
 
-// 'search city' button event listener
+// 'Search city' button event listener
 cityFormEl.addEventListener("submit", formSubmitHandler);
 
-// get data from local storage
+// Get data from local storage
 getLocalStorage();
 
-// create button elements from local storage data
+// Create button elements from local storage data
 function getLocalStorage() {
   if (localStorage.getItem("city")) {
     previousSearches = JSON.parse(localStorage.getItem("city"));
@@ -241,7 +247,7 @@ function getLocalStorage() {
     <button data-city="${cityName}" class="btn rounded-pill btn-outline-primary w-100 my-2 list-city-item">${cityName}</button>`);
       $("#previousSearches").append(cityInput);
     }
-    // display the last searched city on screen
+    // Display the last searched city on screen
     getCurrentWeather(previousSearches[previousSearches.length - 1]);
     getFutureWeather(previousSearches[previousSearches.length - 1]);
   }
