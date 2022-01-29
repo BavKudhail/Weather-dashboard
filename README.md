@@ -34,7 +34,7 @@ THEN I am again presented with current and future conditions for that city
 
 ## Application Screenshot
 
-![application-screenshot-1](https://raw.githubusercontent.com/BavKudhail/work-day-scheduler/main/assets/images/screenshot%201.JPG)
+![application-screenshot-1](https://raw.githubusercontent.com/BavKudhail/weather-dashboard/main/assets/images/screenshot.JPG)
 
 ## The Learning Loop
 
