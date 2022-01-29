@@ -199,7 +199,7 @@ function displayFutureWeather(futureWeatherData) {
   );
   $("#futureForecastHeading").append(forecastHeading);
 
-  for (let i = 0; i < futureWeatherData.length; i += 8) {
+  for (let i = 1; i < futureWeatherData.length; i += 8) {
     var unixFormat = moment.unix(futureWeatherData[i].dt).format("MMM Do YYYY");
     var futureCityData = {
       date: unixFormat,
