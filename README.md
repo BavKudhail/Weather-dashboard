@@ -32,6 +32,14 @@ WHEN I click on a city in the search history ✅
 THEN I am again presented with current and future conditions for that city
 ```
 
+## Technology Used
+
+*html
+*css
+*javascript
+*bootstrap
+*moment.js
+
 ## Application Screenshot
 
 ![application-screenshot-1](https://raw.githubusercontent.com/BavKudhail/weather-dashboard/main/assets/images/screenshot.JPG)
